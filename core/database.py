@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 from .files import Data
 
-config = Data("config").json_read
+config = Data("config").yaml_read()
 
 client = MongoClient(config["mongo-uri"])
 
@@ -16,8 +16,13 @@ class Threads:
 
     def exists(self, **checks):
         return self.col.find_one(checks)
+<<<<<<< Updated upstream
 
     def get(**kwargs):
+=======
+    
+    def get(self, **kwargs):
+>>>>>>> Stashed changes
         return self.col.find_one(kwargs)
 
     @property
@@ -31,7 +36,7 @@ class Logs:
 
     def add_message(self, message, mod=False, system=False):
         if not Threads(message.channel.id).exists: return
-        col = self.db[f"logs_{thread}"]
+        col = self.db[f"logs_{self.thread}"]
         post = {
             "_id": message.id,
             "content": message.content,
