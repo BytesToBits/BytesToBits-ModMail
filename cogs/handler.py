@@ -10,11 +10,11 @@ class ErrorHandler(commands.Cog):
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):
-            return await ctx.send(embed=embeds.error(f"Missing `{error.param}` parameter to use this command"))
+            return await ctx.send(embed=embeds.Embeds("You are not allowed to do this.").error())
         elif isinstance(error, commands.CommandNotFound):
             return
         elif isinstance(error, commands.CheckAnyFailure):
-            return await ctx.send(embed=embeds.error(f"You are not allowed to do this."))
+            return await ctx.send(embed=embeds.Embeds("You are not allowed to do this.").error())
 
 def setup(bot):
     bot.add_cog(ErrorHandler(bot))

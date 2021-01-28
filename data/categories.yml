@@ -1,0 +1,9 @@
+General:
+    mention: "Owo Mention"
+    category: 759762394179436554
+    description: "For general questions, smh."
+    emoji: "❓"
+
+Cancel:
+    description: "Cancel new thread creation."
+    emoji: "❌"

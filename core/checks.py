@@ -1,7 +1,7 @@
 from .files import Data
 from discord.ext import commands
 
-config = Data("config").json_read
+config = Data("config").yaml_read()
 
 def manager():
     def predicate(ctx):
