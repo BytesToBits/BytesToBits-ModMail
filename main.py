@@ -1,5 +1,3 @@
-<<<<<<< Updated upstream
-=======
 import discord, os
 
 from core.files import Data
