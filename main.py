@@ -109,8 +109,6 @@ async def _reload(ctx, *, module):
       embed=discord.Embed(title=f"Reloaded {str(module).capitalize()}", description=f"Successfully reloaded cogs.{str(module).lower()}!", color=0x00d4ff)
       await ctx.send(embed=embed)
 
-keep_alive.keep_alive()
-
 for i in os.listdir("cogs"):
   if i == "staff":
     for i in os.listdir("cogs/staff"):
