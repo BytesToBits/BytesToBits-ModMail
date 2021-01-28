@@ -55,14 +55,14 @@ class SystemEmbeds:
         
         config = Data("config").yaml_read()
 
-        guild_member = bot.get_guild(config["modmail_guild"]).get_member(member.id)
+        guild_member = bot.get_guild(config["main_guild"]).get_member(member.id)
 
         days_old = datetime.datetime.now() - member.created_at
         member_old = datetime.datetime.now() - guild_member.joined_at
 
         embed.description = f"{member.mention} created a new thread."
 
-        embed.add_field(name="Account Age", value=f"`ACCOUNT:` {days_old.days} days\n`SERVER:` {member_old.days}", inline=False)
+        embed.add_field(name="Account Age", value=f"`ACCOUNT:` {days_old.days} days\n`SERVER:` {member_old.days} days", inline=False)
         embed.add_field(name="Roles", value=', '.join([role.mention for role in guild_member.roles]), inline=False)
 
         return embed
