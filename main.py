@@ -1,5 +1,4 @@
 import discord
-import keep_alive
 from discord.ext import commands
 import io
 import textwrap
