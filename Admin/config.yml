@@ -1,0 +1,9 @@
+main:
+  managers:
+  - 219567539049594880
+  mongo: "You ain't getting my mongo key, bitch."
+  prefix: '!'
+  token: "~~waves~~"
+status:
+  name: "with Bits and Bytes"
+  type: 0
