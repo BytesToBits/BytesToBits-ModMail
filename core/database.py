@@ -1,6 +1,8 @@
 from pymongo import MongoClient
 from .files import Data
 
+import datetime
+
 config = Data("config").yaml_read()
 
 client = MongoClient(config["mongo-uri"])
@@ -8,7 +10,7 @@ client = MongoClient(config["mongo-uri"])
 class Threads:
     def __init__(self, thread=None):
         self.thread = thread
-        self.col = client["main"]["threads"]
+        self.col = client["neki"]["threads"]
 
     def create_thread(self, **kwargs):
         kwargs["_id"] = self.thread
@@ -27,17 +29,33 @@ class Threads:
 class Logs:
     def __init__(self, thread:int):
         self.thread = thread
-        self.db = client["logs"]
+        self.db = client["neki_logs"]
     
     def add_message(self, message, mod=False, system=False):
-        if not Threads(message.channel.id).exists: return
+        if not Threads(self.thread).exists: return
         col = self.db[f"logs_{self.thread}"]
         post = {
             "_id": message.id,
             "content": message.content,
             "author": str(message.author),
-            "author_avatar": message.author.avatar_url_as(static_format="png"),
+            "author_avatar": str(message.author.avatar_url_as(static_format="png")),
+            "date": datetime.datetime.utcnow(),
             "system": system,
             "mod": mod
         }
-        ## Never mind that I will continue it once I have a clear picture of how I want it to be.
+        col.insert_one(post)
+    
+    def edit_message(self, message):
+        if not Threads(self.thread).exists: return
+        col = self.db[f"logs_{self.thread}"]
+        col.update_one({"_id":message.id}, {"$set":{"content":message.content}})
+    
+    def get(self, **kwargs):
+        if not Threads(self.thread).exists: return
+        col = self.db[f"logs_{self.thread}"]
+        return col.find_one(kwargs)
+
+    def get_all(self):
+        if not Threads(self.thread).exists: return
+        col = self.db[f"logs_{self.thread}"]
+        return [i for i in col.find({})]

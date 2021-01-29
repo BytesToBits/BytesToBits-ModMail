@@ -16,7 +16,7 @@ class ReplyEmbeds:
         )
 
         embed.set_author(name=str(self.message.author), icon_url=self.message.author.avatar_url_as(static_format="png"))
-        embed.set_footer(text="Recipient Reply")
+        embed.set_footer(text=f"Recipient Reply • Message ID: {self.message.id}")
 
         if self.message.attachments:
             embed.add_field(name="Attachments", value=', '.join([f"[{attachment.filename}]({attachment.url})" for attachment in self.message.attachments]))
@@ -35,7 +35,7 @@ class ReplyEmbeds:
         )
 
         embed.set_author(name=self.config["anonymous_tag"] if anonymous else str(self.message.author), icon_url=self.config["anonymous_avatar"] if anonymous else self.message.author.avatar_url_as(static_format="png"))
-        embed.set_footer(text=self.config["anonymous_footer"] if anonymous else self.message.author.top_role.name)
+        embed.set_footer(text=self.config["anonymous_footer"] if anonymous else self.message.author.top_role.name + f" • Message ID: {self.message.id}")
 
         if self.message.attachments:
             embed.add_field(name="Attachments", value=', '.join([f"[{attachment.filename}]({attachment.url})" for attachment in self.message.attachments]))

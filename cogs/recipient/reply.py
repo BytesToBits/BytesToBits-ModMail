@@ -19,6 +19,7 @@ class RecipientReply(commands.Cog):
         if database.Threads().exists(recipient=message.author.id):
             thread = database.Threads().get(recipient=message.author.id)
             try:
+                database.Logs(thread["_id"]).add_message(message)
                 return await self.bot.get_channel(thread["_id"]).send(embed=embeds.ReplyEmbeds(message).recipientEmbed())
             except Exception as e:
                 await message.author.send(embed=embeds.Embeds("There was an error delivering your message. Please report this issue below to the development team.").error(Error=f"```py\n{e}```"))
@@ -52,6 +53,8 @@ class RecipientReply(commands.Cog):
         category = self.bot.get_channel(next(categories[x]["category"] for x in categories if categories[x]["emoji"] == reaction.emoji))
 
         channel = await category.create_text_channel(name=str(message.author).replace("#", "-"), reason="New thread", topic=f"User ID: {message.author.id}")
+
+        database.Logs(channel.id).add_message(message)
 
         await channel.send(content=next(categories[category]["mention"] for category in categories if categories[category]["emoji"] == reaction.emoji),embed=embeds.SystemEmbeds.new_thread_embed(message.author, self.bot))
 
