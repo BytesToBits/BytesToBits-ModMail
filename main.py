@@ -102,4 +102,3 @@ for file in [i for i in os.listdir("cogs") if i.endswith(".py")]:
         print(f"######\nFailed to load {file}: {e}\n######")
 
 bot.run(config["token"])
->>>>>>> Stashed changes
