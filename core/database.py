@@ -17,10 +17,18 @@ class Threads:
         self.col.insert_one(kwargs)
     
     def exists(self, **checks):
-        return self.col.find_one(checks)
+        r = self.col.find_one(checks)
+        print(r)
+        if r: return True
+        return False
     
     def get(self, **kwargs):
-        return self.col.find_one(kwargs)
+        r = self.col.find_one(kwargs)
+        return r
+    
+    def data(self):
+        r = self.col.find_one({"_id":self.thread})
+        return r
 
     @property
     def delete(self):
@@ -53,7 +61,8 @@ class Logs:
     def get(self, **kwargs):
         if not Threads(self.thread).exists: return
         col = self.db[f"logs_{self.thread}"]
-        return col.find_one(kwargs)
+        r =  col.find_one(kwargs)
+        return r
 
     def get_all(self):
         if not Threads(self.thread).exists: return

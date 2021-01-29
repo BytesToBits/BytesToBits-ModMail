@@ -12,7 +12,6 @@ class ReplyEmbeds:
         embed = Embed(
             description=self.message.content,
             color=Color.green(),
-            timestamp=datetime.datetime.utcnow()
         )
 
         embed.set_author(name=str(self.message.author), icon_url=self.message.author.avatar_url_as(static_format="png"))
@@ -31,21 +30,28 @@ class ReplyEmbeds:
         embed = Embed(
             description=self.message.content,
             color=Color.blurple(),
-            timestamp=datetime.datetime.utcnow()
+        )
+
+        modEmbed = Embed(
+            description=self.message.content,
+            color=Color.blurple(),
         )
 
         embed.set_author(name=self.config["anonymous_tag"] if anonymous else str(self.message.author), icon_url=self.config["anonymous_avatar"] if anonymous else self.message.author.avatar_url_as(static_format="png"))
-        embed.set_footer(text=self.config["anonymous_footer"] if anonymous else self.message.author.top_role.name + f" • Message ID: {self.message.id}")
-
+        embed.set_footer(text=self.config["anonymous_footer"] + f" • Message ID: {self.message.id}" if anonymous else self.message.author.top_role.name + f" • Message ID: {self.message.id}")
         if self.message.attachments:
+            modEmbed.add_field(name="Attachments", value=', '.join([f"[{attachment.filename}]({attachment.url})" for attachment in self.message.attachments]))
             embed.add_field(name="Attachments", value=', '.join([f"[{attachment.filename}]({attachment.url})" for attachment in self.message.attachments]))
             images = [attachment.url for attachment in self.message.attachments if attachment.filename.endswith(".png") or attachment.filename.endswith(".jpg") or attachment.filename.endswith(".webp") or attachment.filename.endswith(".gif")]
             if images:
-                embed.set_image(url=random.choice(images))
-        
-        mod_embed = embed
-        mod_embed.set_author(name=str(self.message.author), icon_url=self.message.author.avatar_url_as(static_format="png"))
-        return (embed, mod_embed)
+                image = random.choice(images)
+                embed.set_image(url=image)
+                modEmbed.set_image(url=image)
+
+        modEmbed.set_author(name=str(self.message.author), icon_url=self.message.author.avatar_url_as(static_format="png"))
+        modEmbed.set_footer(text="Anonymous Reply" + f" • Message ID: {self.message.id}" if anonymous else self.message.author.top_role.name + f" • Message ID: {self.message.id}")
+
+        return (embed, modEmbed)
 
 class SystemEmbeds:
     def new_thread_embed(member, bot):
