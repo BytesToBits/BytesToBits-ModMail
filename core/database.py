@@ -18,7 +18,6 @@ class Threads:
     
     def exists(self, **checks):
         r = self.col.find_one(checks)
-        print(r)
         if r: return True
         return False
     
@@ -58,6 +57,11 @@ class Logs:
         col = self.db[f"logs_{self.thread}"]
         col.update_one({"_id":message.id}, {"$set":{"content":message.content}})
     
+    def delete_message(self, message):
+        if not Threads(self.thread).exists: return
+        col = self.db[f"logs_{self.thread}"]
+        col.delete_one({"_id":message.id})
+
     def get(self, **kwargs):
         if not Threads(self.thread).exists: return
         col = self.db[f"logs_{self.thread}"]

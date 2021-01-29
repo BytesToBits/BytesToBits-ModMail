@@ -1,4 +1,4 @@
-import discord
+import discord, inspect
 
 from core import database, embeds, checks
 
@@ -14,7 +14,7 @@ class ModReply(commands.Cog):
     async def reply(self, ctx, *, message=None):
         if not database.Threads(ctx.channel.id).exists(_id=ctx.channel.id): return
         
-        if not ctx.message.attachments: raise commands.MissingRequiredArgument(param="message")
+        if not message and not ctx.message.attachments: raise commands.MissingRequiredArgument(inspect.Parameter(name="message", kind=inspect.Parameter.POSITIONAL_ONLY))
 
         thread = database.Threads(ctx.channel.id).data()
         recipient = self.bot.get_user(thread["recipient"])
@@ -30,8 +30,10 @@ class ModReply(commands.Cog):
     @commands.guild_only()
     @checks.canReply()
     @commands.command(aliases=["ar"])
-    async def anonreply(self, ctx, *, message):
+    async def anonreply(self, ctx, *, message=None):
         if not database.Threads(ctx.channel.id).exists(_id=ctx.channel.id): return
+        
+        if not message and not ctx.message.attachments: raise commands.MissingRequiredArgument(inspect.Parameter(name="message", kind=inspect.Parameter.POSITIONAL_ONLY))
         
         thread = database.Threads(ctx.channel.id).data()
         recipient = self.bot.get_user(thread["recipient"])
