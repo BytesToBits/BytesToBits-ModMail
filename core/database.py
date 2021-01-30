@@ -20,6 +20,9 @@ class Threads:
         r = self.col.find_one(checks)
         if r: return True
         return False
+
+    def get_all(self):
+        return [r for r in self.col.find({})]
     
     def get(self, **kwargs):
         r = self.col.find_one(kwargs)
@@ -28,6 +31,9 @@ class Threads:
     def data(self):
         r = self.col.find_one({"_id":self.thread})
         return r
+
+    def update_thread(self, **kwargs):
+        self.col.update_one({"_id":self.thread}, {"$set":kwargs})
 
     @property
     def delete(self):

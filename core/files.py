@@ -6,3 +6,6 @@ class Data:
     def yaml_read(self):
         with open(f"data/{self.file}.yml", "r") as f:
             return yload(f, Loader=FullLoader)
+
+    def read(self):
+        return open(f"data/{self.file}.txt", "r").read()
