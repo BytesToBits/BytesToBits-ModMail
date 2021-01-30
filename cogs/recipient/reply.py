@@ -20,7 +20,14 @@ class RecipientReply(commands.Cog):
             thread = database.Threads().get(recipient=message.author.id)
             try:
                 database.Logs(thread["_id"]).add_message(message)
-                return await self.bot.get_channel(thread["_id"]).send(embed=embeds.ReplyEmbeds(message).recipientEmbed())
+                content = None
+                if thread["notify"]:
+                    content = ' '.join(thread["notify"])
+                if thread["subscribed"]:
+                    if not content: content = ""
+                    content += " " + ' '.join(thread["subscribed"])
+                await self.bot.get_channel(thread["_id"]).send(content=content, embed=embeds.ReplyEmbeds(message).recipientEmbed())
+                return database.Threads(thread["_id"]).update_thread(notify=[])
             except Exception as e:
                 await message.author.send(embed=embeds.Embeds("There was an error delivering your message. Please report this issue below to the development team.").error(Error=f"```py\n{e}```"))
                 raise e
