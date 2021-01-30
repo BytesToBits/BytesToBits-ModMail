@@ -7,6 +7,28 @@ config = Data("config").yaml_read()
 
 client = MongoClient(config["mongo-uri"])
 
+class Snippets:
+    def __init__(self):
+        self.snippets = client["neki"]["snippets"]
+
+    def get_all(self):
+        return [snippet for snippet in self.snippets.find({})]
+        
+    def get(self, **kwargs):
+        r = self.snippets.find_one(kwargs)
+        return r
+    
+    def add_snippet(self, name, content):
+        self.snippets.insert_one({
+            "_id":name,
+            "content":content
+            })
+
+    def delete_snippet(self, name):
+        self.snippets.delete_one({
+            "_id":name
+        })
+
 class Threads:
     def __init__(self, thread=None):
         self.thread = thread
