@@ -82,8 +82,7 @@ class ModReply(commands.Cog):
         await message.delete()
         await message.channel.send(embed=replyEmbeds[1])
         return logs.add_message(message, mod=True)
-
-
+        
 
 def setup(bot):
     bot.add_cog(ModReply(bot))
