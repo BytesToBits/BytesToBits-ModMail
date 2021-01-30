@@ -57,10 +57,13 @@ class Logs:
         col = self.db[f"logs_{self.thread}"]
         col.update_one({"_id":message.id}, {"$set":{"content":message.content}})
     
-    def delete_message(self, message):
+    def delete_message(self, message, _id=None):
         if not Threads(self.thread).exists: return
         col = self.db[f"logs_{self.thread}"]
-        col.delete_one({"_id":message.id})
+        if not _id:
+            col.delete_one({"_id":message.id})
+        else:
+            col.delete_one({"_id":_id})
 
     def get(self, **kwargs):
         if not Threads(self.thread).exists: return
