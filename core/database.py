@@ -9,7 +9,7 @@ client = MongoClient(config["mongo-uri"])
 
 class Snippets:
     def __init__(self):
-        self.snippets = client["neki"]["snippets"]
+        self.snippets = client["main"]["snippets"]
 
     def get_all(self):
         return [snippet for snippet in self.snippets.find({})]
@@ -32,7 +32,7 @@ class Snippets:
 class Threads:
     def __init__(self, thread=None):
         self.thread = thread
-        self.col = client["neki"]["threads"]
+        self.col = client["main"]["threads"]
 
     def create_thread(self, **kwargs):
         kwargs["_id"] = self.thread
@@ -64,7 +64,7 @@ class Threads:
 class Logs:
     def __init__(self, thread:int):
         self.thread = thread
-        self.db = client["neki_logs"]
+        self.db = client["logs"]
     
     def add_message(self, message, mod=False, system=False):
         if not Threads(self.thread).exists: return
@@ -116,7 +116,7 @@ class Logs:
 class Blocks:
     def __init__(self, userID=None):
         self.userID = userID
-        self.col = client["neki"]["blocks"]
+        self.col = client["main"]["blocks"]
 
     @property
     def blocked(self):
