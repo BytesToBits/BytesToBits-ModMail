@@ -71,6 +71,7 @@ class Logs:
         col = self.db[f"logs_{self.thread}"]
         post = {
             "_id": message.id,
+            "recipient": Threads().get(_id=self.thread)['recipient'],
             "content": message.content,
             "author": str(message.author),
             "author_avatar": str(message.author.avatar_url_as(static_format="png")),
@@ -103,3 +104,12 @@ class Logs:
         if not Threads(self.thread).exists: return
         col = self.db[f"logs_{self.thread}"]
         return [i for i in col.find({})]
+    
+    def store_logs(self, userID):
+        cols = self.db.list_collection_names()
+        print(cols)
+        r = []
+        for col in cols:
+            if self.db[col].find({"recipient":int(userID)}):
+                r.append(col)
+        return r

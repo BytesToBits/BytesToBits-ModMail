@@ -61,11 +61,11 @@ class RecipientReply(commands.Cog):
 
         channel = await category.create_text_channel(name=str(message.author).replace("#", "-"), reason="New thread", topic=f"User ID: {message.author.id}")
 
-        database.Logs(channel.id).add_message(message)
-
         await channel.send(content=next(categories[category]["mention"] for category in categories if categories[category]["emoji"] == reaction.emoji),embed=embeds.SystemEmbeds.new_thread_embed(message.author, self.bot))
 
         database.Threads(channel.id).create_thread(recipient=message.author.id, close=None, notify=[], subscribed=[])
+
+        database.Logs(channel.id).add_message(message)
 
         self.creating.remove(message.author)
 
