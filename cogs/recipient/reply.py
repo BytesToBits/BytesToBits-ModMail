@@ -14,6 +14,7 @@ class RecipientReply(commands.Cog):
     async def on_message(self, message):
         if not isinstance(message.channel, discord.DMChannel) or message.author.bot: return
         if message.author in self.creating: return
+        if database.Blocks(message.author.id).blocked: return
         categories = Data("categories").yaml_read()
 
         if database.Threads().exists(recipient=message.author.id):

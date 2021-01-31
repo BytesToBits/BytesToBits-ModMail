@@ -113,3 +113,31 @@ class Logs:
             if self.db[col].find({"recipient":int(userID)}):
                 r.append(col)
         return r
+
+class Blocks:
+    def __init__(self, userID=None):
+        self.userID = userID
+        self.col = client["neki"]["blocks"]
+
+    @property
+    def blocked(self):
+        r = self.col.find_one({"_id":self.userID})
+        if r: return True
+        else: return False
+
+    def block(self, reason):
+        self.col.insert_one({
+            "_id":self.userID,
+            "reason": reason
+        })
+    
+    @property
+    def unblock(self):
+        self.col.delete_one({
+            "_id":self.userID
+        })
+    
+    @property
+    def reason(self):
+        r = self.col.find_one({"_id":self.userID})
+        return r['reason']
