@@ -19,8 +19,11 @@ class RecipientReply(commands.Cog):
 
         if database.Threads().exists(recipient=message.author.id):
             thread = database.Threads().get(recipient=message.author.id)
+            if thread['close']:
+                database.Threads(thread["_id"]).update_thread(close=None)
             try:
                 database.Logs(thread["_id"]).add_message(message)
+                await self.bot.get_channel(thread["_id"]).send(embed=embeds.Embeds("Close canceled due to new reply.").warn())
                 content = None
                 if thread["notify"]:
                     content = ' '.join(thread["notify"])

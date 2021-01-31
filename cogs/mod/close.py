@@ -81,6 +81,10 @@ class ModClose(commands.Cog):
         thread = database.Threads(ctx.channel.id)
         if not thread.exists(_id=ctx.channel.id): return
 
+        if time.lower() == "cancel":
+            thread.update_thread(close=None)
+            return await ctx.send(embed=embeds.Embeds(f"Close canceled.").warn())
+
         closeDate = parse(f"in {time}")
         if closeDate < datetime.datetime.now() and not time == "now": return await ctx.send(embed=embeds.Embeds("Invalid time.").error())
 
