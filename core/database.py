@@ -107,10 +107,9 @@ class Logs:
     
     def store_logs(self, userID):
         cols = self.db.list_collection_names()
-        print(cols)
         r = []
         for col in cols:
-            if self.db[col].find({"recipient":int(userID)}):
+            if self.db[col].find_one({"recipient":int(userID)}):
                 r.append(col)
         return r
 

@@ -1,6 +1,6 @@
 import discord
 
-from core import database, embeds
+from core import database, embeds, checks
 
 from typing import Union
 
@@ -10,6 +10,8 @@ class Blocks(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    @commands.guild_only()
+    @checks.canReply()
     @commands.command()
     async def block(self, ctx, user:Union[discord.User, int]=None, reason="No reason specified"):
         if not user:
@@ -35,6 +37,8 @@ class Blocks(commands.Cog):
         else:
             return await ctx.send(embed=embeds.Embeds("Invalid User ID.").error())
 
+    @commands.guild_only()
+    @checks.canReply()
     @commands.command()
     async def unblock(self, ctx, user:Union[discord.User, int]=None):
         if not user:
