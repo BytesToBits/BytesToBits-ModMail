@@ -69,7 +69,7 @@ class SystemEmbeds:
         embed.description = f"{member.mention} created a new thread."
 
         embed.add_field(name="Account Age", value=f"`ACCOUNT:` {days_old.days} days\n`SERVER:` {member_old.days} days", inline=False)
-        embed.add_field(name="Roles", value=', '.join([f"**{role.name}**" for role in guild_member.roles]), inline=False)
+        embed.add_field(name="Roles", value=', '.join([f"**{role.name}**" for role in guild_member.roles][:35]), inline=False)
 
         return embed
 
