@@ -11,7 +11,7 @@ class Subscribe(commands.Cog):
 
     @commands.guild_only()
     @checks.canReply()
-    @commands.command(aliaes=["sub", "simp"])
+    @commands.command(aliases=["sub", "simp"])
     async def subscribe(self, ctx, *, user:discord.User=None):
         if not Threads().exists(_id=ctx.channel.id): return
         if user and not ctx.author.guild_permissions.administrator: return await ctx.send(embed=embeds.Embeds("You are not allowed to do that.").error())
