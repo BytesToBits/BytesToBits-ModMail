@@ -11,9 +11,9 @@ class RecipientTypeSynch(commands.Cog):
     @commands.Cog.listener()
     async def on_typing(self, channel, user, when):
         if not isinstance(channel, discord.DMChannel): return
-        if not Threads(channel.id).exists(_id=channel.id): return
+        if not Threads().exists(recipient=user.id): return
         
-        thread = Threads(channel.id).get(recipient=user.id)
+        thread = Threads().get(recipient=user.id)
 
         return await self.bot.get_channel(thread["_id"]).trigger_typing()
 
