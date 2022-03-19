@@ -1,5 +1,5 @@
 General:
-    mention: "Owo Mention"
+    mention: "Mention Message <@roleid>"
     category: 759762394179436554
     description: "For general questions, smh."
     emoji: "❓"
