@@ -5,7 +5,7 @@
 
 ## Configuring the Bot
 - **Categories:** to add/remove/edit categories, you will need to edit the `data/categories.yml` file. All categories must follow this format *(except from the `Cancel` category)*
-```json
+```yaml
 CategoryName:
     mention: "Mention Message <@roleid>" // Message on thread creation
     category: 759762394179436554 // Thread Category ID
