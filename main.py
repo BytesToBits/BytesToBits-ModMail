@@ -9,8 +9,7 @@ from discord.ext import commands
 
 config = Data("config").yaml_read()
 
-intents = discord.Intents.default()
-intents.members = True
+intents = discord.Intents.all()
 
 bot = commands.Bot(command_prefix=config["prefix"], case_insensitive=True, help_command=None, intents=intents)
 
